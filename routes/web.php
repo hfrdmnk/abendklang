@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +17,23 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
   return Inertia::render('Index');
+});
+
+Route::get('/auth', function () {
+  return Inertia::render('Login');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Socialite
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/auth/redirect', function () {
+  return Socialite::driver('spotify')->redirect();
+});
+
+Route::get('/auth/callback', function () {
+  $user = Socialite::driver('spotify')->user();
+  dd($user);
 });

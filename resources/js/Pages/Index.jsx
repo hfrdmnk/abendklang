@@ -1,7 +1,10 @@
+import { Head } from "@inertiajs/react";
+
 export default function Index() {
     return (
-        <div>
+        <>
+            <Head title="abendklang." />
             <h1>Index</h1>
-        </div>
+        </>
     );
 }
