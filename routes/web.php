@@ -1,7 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Models\User;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Redirect;
 use Laravel\Socialite\Facades\Socialite;
 
 /*
@@ -16,12 +20,24 @@ use Laravel\Socialite\Facades\Socialite;
 */
 
 Route::get('/', function () {
-  return Inertia::render('Index');
-});
+  return Inertia::render('Index', [
+    'user' => User::find(auth()->id())->only(['name']),
+  ]);
+})->middleware('auth');
 
-Route::get('/auth', function () {
+Route::get('/auth/login', function () {
   return Inertia::render('Login');
-});
+})->middleware('guest')->name('login');
+
+Route::get('/auth/logout', function (Request $request): RedirectResponse {
+  auth()->logout();
+
+  $request->session()->invalidate();
+
+  $request->session()->regenerateToken();
+
+  return redirect('/');
+})->middleware('auth')->name('logout');
 
 /*
 |--------------------------------------------------------------------------
@@ -30,10 +46,24 @@ Route::get('/auth', function () {
 */
 
 Route::get('/auth/redirect', function () {
-  return Socialite::driver('spotify')->redirect();
+  return Socialite::driver('spotify')
+    ->scopes(['playlist-modify-private'])
+    ->redirect();
 });
 
 Route::get('/auth/callback', function () {
-  $user = Socialite::driver('spotify')->user();
-  dd($user);
+  $spotifyUser = Socialite::driver('spotify')->user();
+
+  $user = User::updateOrCreate([
+    'spotify_id' => $spotifyUser->id,
+  ], [
+    'name' => $spotifyUser->name,
+    'token' => $spotifyUser->token,
+    'refresh_token' => $spotifyUser->refreshToken,
+    'expires_in' => now()->addSeconds($spotifyUser->expiresIn),
+  ]);
+
+  auth()->login($user);
+
+  return redirect('/');
 });
