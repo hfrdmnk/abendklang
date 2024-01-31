@@ -21,11 +21,11 @@ use Laravel\Socialite\Facades\Socialite;
 
 Route::get('/', function () {
     return Inertia::render('Index', [
-        'user' => User::find(auth()->id())->only(['name']),
+        'user' => User::find(auth()->id())->only(['name', 'mode', 'log_entries']),
     ]);
 })->middleware('auth');
 
-Route::get('/auth/login', function () {
+Route::get('/hello', function () {
     return Inertia::render('Login');
 })->middleware('guest')->name('login');
 

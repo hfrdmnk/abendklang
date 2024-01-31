@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
+            $table->enum('mode', ['nostalgia', 'discovery'])->default('discovery');
             $table->string('spotify_id')->unique();
             $table->string('token');
             $table->string('refresh_token');
