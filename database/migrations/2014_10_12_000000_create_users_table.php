@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->enum('mode', ['nostalgia', 'discovery'])->default('discovery');
             $table->string('spotify_id')->unique();
-            $table->string('token');
+            $table->string('access_token');
             $table->string('refresh_token');
-            $table->date('expires_in');
+            $table->dateTime('access_token_expires_at');
             $table->rememberToken();
             $table->timestamps();
         });

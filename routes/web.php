@@ -21,7 +21,7 @@ use Laravel\Socialite\Facades\Socialite;
 
 Route::get('/', function () {
     return Inertia::render('Index', [
-        'user' => User::find(auth()->id())->only(['name', 'mode', 'log_entries']),
+        'user' => User::find(auth()->id())->only(['name', 'mode', 'todays_log_entry']),
     ]);
 })->middleware('auth');
 
@@ -58,9 +58,9 @@ Route::get('/auth/callback', function () {
         'spotify_id' => $spotifyUser->id,
     ], [
         'name' => $spotifyUser->name,
-        'token' => $spotifyUser->token,
+        'access_token' => $spotifyUser->token,
         'refresh_token' => $spotifyUser->refreshToken,
-        'expires_in' => now()->addSeconds($spotifyUser->expiresIn),
+        'access_token_expires_at' => now()->addSeconds($spotifyUser->expiresIn),
     ]);
 
     auth()->login($user);

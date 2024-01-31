@@ -22,9 +22,9 @@ class User extends Authenticatable
     protected $fillable = [
         'spotify_id',
         'name',
-        'token',
+        'access_token',
         'refresh_token',
-        'expires_in',
+        'access_token_expires_at',
     ];
 
     /**
@@ -33,12 +33,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
         'remember_token',
         'spotify_id',
-        'token',
+        'access_token',
         'refresh_token',
-        'expires_in',
+        'access_token_expires_at',
     ];
 
     /**
@@ -47,12 +46,16 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'access_token_expires_at' => 'datetime',
     ];
 
     public function log_entries()
     {
         return $this->hasMany(LogEntry::class);
+    }
+
+    public function todays_log_entry()
+    {
+        return $this->log_entries()->whereDate('created_at', today());
     }
 }
