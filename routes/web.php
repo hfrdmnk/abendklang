@@ -20,23 +20,23 @@ use Laravel\Socialite\Facades\Socialite;
 */
 
 Route::get('/', function () {
-  return Inertia::render('Index', [
-    'user' => User::find(auth()->id())->only(['name']),
-  ]);
+    return Inertia::render('Index', [
+        'user' => User::find(auth()->id())->only(['name']),
+    ]);
 })->middleware('auth');
 
 Route::get('/auth/login', function () {
-  return Inertia::render('Login');
+    return Inertia::render('Login');
 })->middleware('guest')->name('login');
 
 Route::get('/auth/logout', function (Request $request): RedirectResponse {
-  auth()->logout();
+    auth()->logout();
 
-  $request->session()->invalidate();
+    $request->session()->invalidate();
 
-  $request->session()->regenerateToken();
+    $request->session()->regenerateToken();
 
-  return redirect('/');
+    return redirect('/');
 })->middleware('auth')->name('logout');
 
 /*
@@ -46,24 +46,24 @@ Route::get('/auth/logout', function (Request $request): RedirectResponse {
 */
 
 Route::get('/auth/redirect', function () {
-  return Socialite::driver('spotify')
-    ->scopes(['playlist-modify-private'])
-    ->redirect();
+    return Socialite::driver('spotify')
+        ->scopes(['playlist-modify-private'])
+        ->redirect();
 });
 
 Route::get('/auth/callback', function () {
-  $spotifyUser = Socialite::driver('spotify')->user();
+    $spotifyUser = Socialite::driver('spotify')->user();
 
-  $user = User::updateOrCreate([
-    'spotify_id' => $spotifyUser->id,
-  ], [
-    'name' => $spotifyUser->name,
-    'token' => $spotifyUser->token,
-    'refresh_token' => $spotifyUser->refreshToken,
-    'expires_in' => now()->addSeconds($spotifyUser->expiresIn),
-  ]);
+    $user = User::updateOrCreate([
+        'spotify_id' => $spotifyUser->id,
+    ], [
+        'name' => $spotifyUser->name,
+        'token' => $spotifyUser->token,
+        'refresh_token' => $spotifyUser->refreshToken,
+        'expires_in' => now()->addSeconds($spotifyUser->expiresIn),
+    ]);
 
-  auth()->login($user);
+    auth()->login($user);
 
-  return redirect('/');
+    return redirect('/');
 });
