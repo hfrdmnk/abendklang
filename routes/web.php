@@ -47,7 +47,7 @@ Route::get('/auth/logout', function (Request $request): RedirectResponse {
 
 Route::get('/auth/redirect', function () {
     return Socialite::driver('spotify')
-        ->scopes(['playlist-modify-private'])
+        ->scopes(['playlist-modify-private', 'user-top-read'])
         ->redirect();
 });
 

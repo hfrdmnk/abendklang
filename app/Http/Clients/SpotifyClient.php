@@ -11,14 +11,62 @@ class SpotifyClient
     {
     }
 
-    public function checkAccessToken(): void
+    public function getSong(): array
+    {
+        $this->checkAccessToken();
+
+        switch ($this->user->mode) {
+            case 'discovery':
+                return $this->getDiscoverySong();
+            case 'nostalgia':
+                return $this->getNostalgiaSong();
+        }
+    }
+
+    protected function getDiscoverySong(): array
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $this->user->access_token,
+        ])->get('https://api.spotify.com/v1/recommendations', [
+            'limit' => 10,
+            'seed_artists' => $this->getTopArtists(),
+        ]);
+
+        $responseJson = $response->json();
+
+        dd($responseJson);
+
+        $song = $responseJson['tracks'][array_rand($responseJson['tracks'])];
+
+        dd($song);
+    }
+
+    protected function getTopArtists(): string
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $this->user->access_token,
+        ])->get('https://api.spotify.com/v1/me/top/artists', []);
+
+        $responseJson = $response->json();
+
+        $artists = collect($responseJson['items'])->random(5)->pluck('id')->toArray();
+
+        return implode(',', $artists);
+    }
+
+    protected function getNostalgiaSong(): array
+    {
+        return [];
+    }
+
+    protected function checkAccessToken(): void
     {
         if ($this->user->access_token_expires_at->isPast()) {
             $this->refreshAccessToken();
         }
     }
 
-    public function refreshAccessToken(): void
+    protected function refreshAccessToken(): void
     {
         $response = Http::asForm()->withHeaders([
             'Authorization' => 'Basic ' . base64_encode(config('services.spotify.client_id') . ':' . config('services.spotify.client_secret'))
