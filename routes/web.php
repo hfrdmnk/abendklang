@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -19,25 +21,10 @@ use Laravel\Socialite\Facades\Socialite;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Index', [
-        'user' => User::find(auth()->id())->only(['name', 'mode', 'todays_log_entry']),
-    ]);
-})->middleware('auth');
+Route::get('/', [UserController::class, 'index'])->middleware('auth')->name('index');
+Route::post('/update-timezone', [UserController::class, 'updateTimezone'])->middleware('auth')->name('timezone.update');
 
-Route::get('/hello', function () {
-    return Inertia::render('Login');
-})->middleware('guest')->name('login');
-
-Route::get('/auth/logout', function (Request $request): RedirectResponse {
-    auth()->logout();
-
-    $request->session()->invalidate();
-
-    $request->session()->regenerateToken();
-
-    return redirect('/');
-})->middleware('auth')->name('logout');
+Route::get('/hello', [UserController::class, 'login'])->middleware('guest')->name('login');
 
 /*
 |--------------------------------------------------------------------------
@@ -45,25 +32,8 @@ Route::get('/auth/logout', function (Request $request): RedirectResponse {
 |--------------------------------------------------------------------------
 */
 
-Route::get('/auth/redirect', function () {
-    return Socialite::driver('spotify')
-        ->scopes(['playlist-modify-private', 'user-top-read'])
-        ->redirect();
-});
 
-Route::get('/auth/callback', function () {
-    $spotifyUser = Socialite::driver('spotify')->user();
+Route::get('/auth/redirect', [AuthController::class, 'redirect'])->middleware('guest');
+Route::get('/auth/callback', [AuthController::class, 'callback'])->middleware('guest');
 
-    $user = User::updateOrCreate([
-        'spotify_id' => $spotifyUser->id,
-    ], [
-        'name' => $spotifyUser->name,
-        'access_token' => $spotifyUser->token,
-        'refresh_token' => $spotifyUser->refreshToken,
-        'access_token_expires_at' => now()->addSeconds($spotifyUser->expiresIn),
-    ]);
-
-    auth()->login($user);
-
-    return redirect('/');
-});
+Route::get('/auth/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');

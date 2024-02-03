@@ -1,6 +1,12 @@
 import { Head } from "@inertiajs/react";
+import { useEffect } from "react";
+import { updateUserTimezone } from "@/Helpers/timezone";
 
 export default function Index({ user }) {
+    useEffect(() => {
+        updateUserTimezone();
+    }, []);
+
     return (
         <>
             <Head title="abendklang." />
