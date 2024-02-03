@@ -1,4 +1,4 @@
-import axios from "axios";
+import { router } from "@inertiajs/react";
 
 export function updateUserTimezone() {
     const timezoneUpdated = sessionStorage.getItem("timezoneUpdated");
@@ -6,13 +6,17 @@ export function updateUserTimezone() {
     if (!timezoneUpdated) {
         const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-        axios
-            .post(route("timezone.update"), {
+        router.post(
+            route("timezone.update"),
+            {
                 timezone: userTimezone,
-            })
-            .then(() => {
-                sessionStorage.setItem("timezoneUpdated", true);
-                console.log("Timezone updated");
-            });
+            },
+            {
+                onSuccess: () => {
+                    sessionStorage.setItem("timezoneUpdated", true);
+                    console.log("Timezone updated");
+                },
+            }
+        );
     }
 }
