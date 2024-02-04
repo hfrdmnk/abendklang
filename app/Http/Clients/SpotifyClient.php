@@ -88,6 +88,7 @@ class SpotifyClient
 
         $randomOffset = rand(0, $totalTracks - 1);
 
+        // TODO: Fetch all tracks from library and pick a random one
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $this->user->access_token,
         ])->get('https://api.spotify.com/v1/me/tracks', [
