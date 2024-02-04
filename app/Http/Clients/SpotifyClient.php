@@ -11,19 +11,19 @@ class SpotifyClient
     {
     }
 
-    public function getSong(): array
+    public function getTrack(): array
     {
         $this->checkAccessToken();
 
         switch ($this->user->mode) {
             case 'discovery':
-                return $this->getDiscoverySong();
+                return $this->getDiscoveryTrack();
             case 'nostalgia':
-                return $this->getNostalgiaSong();
+                return $this->getNostalgiaTrack();
         }
     }
 
-    protected function getDiscoverySong(): array
+    protected function getDiscoveryTrack(): array
     {
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $this->user->access_token,
@@ -34,11 +34,9 @@ class SpotifyClient
 
         $responseJson = $response->json();
 
-        dd($responseJson);
+        $track = $responseJson['tracks'][array_rand($responseJson['tracks'])];
 
-        $song = $responseJson['tracks'][array_rand($responseJson['tracks'])];
-
-        dd($song);
+        return $track;
     }
 
     protected function getTopArtists(): string
@@ -54,7 +52,7 @@ class SpotifyClient
         return implode(',', $artists);
     }
 
-    protected function getNostalgiaSong(): array
+    protected function getNostalgiaTrack(): array
     {
         return [];
     }

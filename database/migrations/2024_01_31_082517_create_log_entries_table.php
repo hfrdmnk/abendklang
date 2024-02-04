@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignUuid('user_id')->constrained()->onDelete('cascade');
             $table->string('track_id');
             $table->enum('mode', ['nostalgia', 'discovery']);
-            $table->integer('mood');
+            $table->integer('mood')->nullable();
             $table->timestamps();
         });
     }

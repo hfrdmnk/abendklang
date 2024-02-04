@@ -17,8 +17,9 @@ return new class extends Migration
             $table->text('artists');
             $table->string('album');
             $table->string('album_art');
-            $table->string('preview_url');
+            $table->string('preview_url')->nullable();
             $table->string('spotify_url');
+            $table->string('spotify_uri');
             $table->timestamps();
         });
     }

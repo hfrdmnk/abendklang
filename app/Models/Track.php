@@ -17,6 +17,11 @@ class Track extends Model
         'album_art',
         'preview_url',
         'spotify_url',
+        'spotify_uri',
+    ];
+
+    protected $casts = [
+        'artists' => 'array',
     ];
 
     public function logEntries()

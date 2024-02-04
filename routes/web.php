@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LogEntryController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
 use Inertia\Inertia;
@@ -26,9 +27,11 @@ Route::post('/update-timezone', [UserController::class, 'updateTimezone'])->midd
 
 Route::get('/hello', [UserController::class, 'login'])->middleware('guest')->name('login');
 
+Route::get('/create-log-entry', [LogEntryController::class, 'store'])->middleware('auth')->name('log-entry.store');
+
 /*
 |--------------------------------------------------------------------------
-| Socialite
+| Auth
 |--------------------------------------------------------------------------
 */
 

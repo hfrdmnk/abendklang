@@ -12,7 +12,14 @@ export default function Index({ user }) {
             <Head title="abendklang." />
             <h1>Index</h1>
             <p>Welcome back, {user.name}</p>
-            <a onClick={() => router.post(route("logout"))}>Logout</a>
+            <p>
+                <a onClick={() => router.get(route("log-entry.store"))}>
+                    Generate song
+                </a>
+            </p>
+            <p>
+                <a onClick={() => router.post(route("logout"))}>Logout</a>
+            </p>
         </>
     );
 }
