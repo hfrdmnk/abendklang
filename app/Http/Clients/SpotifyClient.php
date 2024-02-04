@@ -54,6 +54,13 @@ class SpotifyClient
 
     protected function getNostalgiaTrack(): array
     {
+        $random = rand(0, 1);
+
+        return $random > 0.5 ? $this->getTrackFromTop() : $this->getTrackFromLibrary();
+    }
+
+    protected function getTrackFromTop(): array
+    {
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $this->user->access_token,
         ])->get('https://api.spotify.com/v1/me/top/tracks', [
@@ -64,6 +71,33 @@ class SpotifyClient
         $responseJson = $response->json();
 
         $track = $responseJson['items'][array_rand($responseJson['items'])];
+
+        return $track;
+    }
+
+    protected function getTrackFromLibrary(): array
+    {
+        $totalResponse = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $this->user->access_token,
+        ])->get('https://api.spotify.com/v1/me/top/tracks', [
+            'limit' => 1,
+        ]);
+
+        $totalResponseJson = $totalResponse->json();
+        $totalTracks = $totalResponseJson['total'];
+
+        $randomOffset = rand(0, $totalTracks - 1);
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $this->user->access_token,
+        ])->get('https://api.spotify.com/v1/me/tracks', [
+            'limit' => 1,
+            'offset' => $randomOffset,
+        ]);
+
+        $responseJson = $response->json();
+
+        $track = $responseJson['items'][0]['track'];
 
         return $track;
     }

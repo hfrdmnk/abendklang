@@ -23,7 +23,7 @@ class AuthController extends Controller
     public function redirect()
     {
         return Socialite::driver('spotify')
-            ->scopes(['playlist-modify-private', 'user-top-read'])
+            ->scopes(['playlist-modify-private', 'user-top-read', 'user-library-read'])
             ->redirect();
     }
 
