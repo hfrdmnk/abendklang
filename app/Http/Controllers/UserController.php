@@ -13,6 +13,7 @@ class UserController extends Controller
     {
         return Inertia::render('Index', [
             'user' => User::find(auth()->id())->only(['name', 'mode', 'todays_log_entry']),
+            'is_evening' => isEvening()
         ]);
     }
 
