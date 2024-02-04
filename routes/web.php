@@ -36,4 +36,4 @@ Route::get('/hello', [UserController::class, 'login'])->middleware('guest')->nam
 Route::get('/auth/redirect', [AuthController::class, 'redirect'])->middleware('guest');
 Route::get('/auth/callback', [AuthController::class, 'callback'])->middleware('guest');
 
-Route::get('/auth/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
+Route::post('/auth/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');

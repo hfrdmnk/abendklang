@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('log_entries', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->foreignUuid('user_id')->constrained()->onDelete('cascade');
-            $table->string('track_id');
-            $table->enum('mode', ['nostalgia', 'discovery']);
-            $table->integer('mood');
+        Schema::create('tracks', function (Blueprint $table) {
+            $table->string('id')->primary();
+            $table->string('title');
+            $table->text('artists');
+            $table->string('album');
+            $table->string('album_art');
+            $table->string('preview_url');
+            $table->string('spotify_url');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('log_entries');
+        Schema::dropIfExists('tracks');
     }
 };
