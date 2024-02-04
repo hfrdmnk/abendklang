@@ -19,6 +19,14 @@ class LogEntry extends Model
         'mood',
     ];
 
+    protected $appends = [
+        'created_at_user_tz',
+    ];
+
+    protected $with = [
+        'track',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -29,19 +37,9 @@ class LogEntry extends Model
         return $this->belongsTo(Track::class);
     }
 
-    protected function userCreatedAt(): Attribute
-    {
-        return Attribute::make(
-            get: function ($value) {
-                $timezone = Auth::user()->timezone ?? config('app.timezone');
-                return $value->timezone($timezone)->toDateTimeString();
-            }
-        );
-    }
-
     public function getCreatedAtUserTzAttribute()
     {
         $timezone = Auth::user()->timezone ?? config('app.timezone');
-        return $this->created_at->timezone($timezone)->toDateTimeString();
+        return $this->created_at->timezone($timezone);
     }
 }

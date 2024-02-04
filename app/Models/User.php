@@ -9,6 +9,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Log;
 
 class User extends Authenticatable
 {
@@ -40,6 +41,14 @@ class User extends Authenticatable
         'access_token_expires_at',
     ];
 
+    protected $appends = [
+        'todays_log_entry',
+    ];
+
+    protected $with = [
+        'logEntries',
+    ];
+
     /**
      * The attributes that should be cast.
      *
@@ -49,13 +58,19 @@ class User extends Authenticatable
         'access_token_expires_at' => 'datetime',
     ];
 
-    public function log_entries()
+    public function logEntries()
     {
         return $this->hasMany(LogEntry::class);
     }
 
-    public function todays_log_entry()
+    public function getTodaysLogEntryAttribute()
     {
-        return $this->log_entries()->whereDate('created_at', today());
+        $logEntries = $this->logEntries()->latest()->get();
+
+        $filteredLogEntries = $logEntries->filter(function ($logEntry) {
+            return $logEntry->createdAtUserTz->isToday();
+        });
+
+        return $filteredLogEntries->first();
     }
 }

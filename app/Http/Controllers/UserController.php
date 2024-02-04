@@ -12,7 +12,7 @@ class UserController extends Controller
     public function index()
     {
         return Inertia::render('Index', [
-            'user' => User::find(auth()->id())->only(['name', 'mode', 'todays_log_entry']),
+            'user' => User::find(auth()->id())->only('name', 'mode', 'todays_log_entry'),
             'is_evening' => isEvening()
         ]);
     }
