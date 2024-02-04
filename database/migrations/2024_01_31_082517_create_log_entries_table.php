@@ -18,6 +18,8 @@ return new class extends Migration
             $table->enum('mode', ['nostalgia', 'discovery']);
             $table->integer('mood')->nullable();
             $table->timestamps();
+
+            $table->foreign('track_id')->references('id')->on('tracks');
         });
     }
 

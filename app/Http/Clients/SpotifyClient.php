@@ -54,7 +54,18 @@ class SpotifyClient
 
     protected function getNostalgiaTrack(): array
     {
-        return [];
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $this->user->access_token,
+        ])->get('https://api.spotify.com/v1/me/top/tracks', [
+            'limit' => 50,
+            'time_range' => 'long_term',
+        ]);
+
+        $responseJson = $response->json();
+
+        $track = $responseJson['items'][array_rand($responseJson['items'])];
+
+        return $track;
     }
 
     protected function checkAccessToken(): void
