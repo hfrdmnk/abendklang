@@ -27,7 +27,7 @@ Route::post('/update-timezone', [UserController::class, 'updateTimezone'])->midd
 
 Route::get('/hello', [UserController::class, 'login'])->middleware('guest')->name('login');
 
-Route::get('/create-log-entry', [LogEntryController::class, 'store'])->middleware('auth')->name('log-entry.store');
+Route::post('/log-entry', [LogEntryController::class, 'store'])->middleware('auth')->name('log-entry.store');
 
 /*
 |--------------------------------------------------------------------------

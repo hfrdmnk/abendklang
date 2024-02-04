@@ -13,7 +13,7 @@ export default function Index({ user }) {
             <h1>Index</h1>
             <p>Welcome back, {user.name}</p>
             <p>
-                <a onClick={() => router.get(route("log-entry.store"))}>
+                <a onClick={() => router.post(route("log-entry.store"))}>
                     Generate song
                 </a>
             </p>
