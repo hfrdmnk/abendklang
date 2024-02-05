@@ -11,6 +11,10 @@ class LogEntryController extends Controller
 {
     public function store(Request $request)
     {
+        if (!isEvening() || $request->user()->todays_log_entry !== null) {
+            abort(403);
+        }
+
         $user = $request->user();
         $spotifyClient = new SpotifyClient($user);
         $track = $spotifyClient->getTrack();
