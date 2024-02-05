@@ -14,13 +14,14 @@ class LogEntry extends Model
 
     protected $fillable = [
         'user_id',
+        'date',
         'track_id',
         'mode',
         'mood',
     ];
 
-    protected $appends = [
-        'created_at_user_tz',
+    protected $casts = [
+        'date' => 'date',
     ];
 
     protected $with = [
@@ -35,11 +36,5 @@ class LogEntry extends Model
     public function track()
     {
         return $this->belongsTo(Track::class);
-    }
-
-    public function getCreatedAtUserTzAttribute()
-    {
-        $timezone = Auth::user()->timezone ?? config('app.timezone');
-        return $this->created_at->timezone($timezone);
     }
 }

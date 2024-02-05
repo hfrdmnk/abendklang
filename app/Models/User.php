@@ -65,12 +65,10 @@ class User extends Authenticatable
 
     public function getTodaysLogEntryAttribute()
     {
-        $logEntries = $this->logEntries()->latest()->get();
+        $date = now($this->timezone)->startOfDay();
 
-        $filteredLogEntries = $logEntries->filter(function ($logEntry) {
-            return $logEntry->createdAtUserTz->isToday();
-        });
-
-        return $filteredLogEntries->first();
+        return LogEntry::where('user_id', $this->id)
+            ->whereDate('date', $date)
+            ->first();
     }
 }

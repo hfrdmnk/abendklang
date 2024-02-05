@@ -48,8 +48,11 @@ class LogEntryController extends Controller
             'spotify_uri' => $track['uri'],
         ]);
 
+        $date = now($user->timezone)->startOfDay();
+
         LogEntry::create([
             'user_id' => $user->id,
+            'date' => $date,
             'track_id' => $storedTrack->id,
             'mode' => $user->mode,
         ]);

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('log_entries', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->constrained()->onDelete('cascade');
+            $table->date('date');
             $table->string('track_id');
             $table->enum('mode', ['nostalgia', 'discovery']);
             $table->integer('mood')->nullable();
