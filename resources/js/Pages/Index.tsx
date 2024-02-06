@@ -4,7 +4,7 @@ import { updateUserTimezone } from "@/Helpers/timezone";
 import route from "ziggy-js";
 import Logo from "@/Components/Icons/Logo";
 
-export default function Index({ user }) {
+export default function Index({ user }: { user: App.Models.User }) {
     useEffect(() => {
         updateUserTimezone();
     }, []);
