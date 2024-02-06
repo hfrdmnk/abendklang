@@ -1,7 +1,9 @@
 import { router } from "@inertiajs/react";
+import route from "ziggy-js";
 
 export function updateUserTimezone() {
-    const timezoneUpdated = sessionStorage.getItem("timezoneUpdated");
+    const timezoneUpdated =
+        sessionStorage.getItem("timezoneUpdated") === "true";
 
     if (!timezoneUpdated) {
         const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -13,7 +15,7 @@ export function updateUserTimezone() {
             },
             {
                 onSuccess: () => {
-                    sessionStorage.setItem("timezoneUpdated", true);
+                    sessionStorage.setItem("timezoneUpdated", true.toString());
                     console.log("Timezone updated");
                 },
             }
