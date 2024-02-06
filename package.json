@@ -7,7 +7,6 @@
     },
     "devDependencies": {
         "@types/react-dom": "^18.2.18",
-        "@types/ziggy-js": "^1.8.0",
         "autoprefixer": "^10.4.17",
         "laravel-vite-plugin": "^1.0.0",
         "postcss": "^8.4.33",
