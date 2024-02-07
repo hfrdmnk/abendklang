@@ -35,6 +35,11 @@ export default function Index({ user }: { user: App.Models.User }) {
                 </p>
             ) : user.todays_log_entry ? (
                 <div>
+                    <img
+                        src={user.todays_log_entry.track.album_art}
+                        alt="Album art"
+                        className="block w-48 rounded aspect-square"
+                    />
                     <p>{user.todays_log_entry.track.title}</p>
                     <p>
                         <a href={user.todays_log_entry.track.spotify_uri}>
