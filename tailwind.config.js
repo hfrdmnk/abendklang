@@ -12,6 +12,11 @@ module.exports = {
             },
         },
         extend: {
+            fontFamily: {
+                body: ["Geist", "system-ui", "sans-serif"],
+                heading: ["Sentient", "serif"],
+                info: ["Geist Mono", "monospace"],
+            },
             colors: {
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
