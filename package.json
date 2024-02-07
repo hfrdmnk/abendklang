@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "@inertiajs/react": "^1.0.14",
+        "@radix-ui/react-slot": "^1.0.2",
         "@types/react": "^18.2.55",
         "@vitejs/plugin-react": "^4.2.1",
         "class-variance-authority": "^0.7.0",
