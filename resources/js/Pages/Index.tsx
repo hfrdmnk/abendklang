@@ -6,6 +6,7 @@ import route from "ziggy-js";
 import AppLayout from "@/Layouts/AppLayout";
 import { Button } from "@/Components/ui/button";
 import { Pause, Play } from "lucide-react";
+import ConfettiExplosion from "react-confetti-explosion";
 
 export default function Index({ user }: { user: App.Models.User }) {
     const [countdown, setCountdown] = useState<
@@ -70,6 +71,7 @@ function Track({ track }: { track: App.Models.Track }) {
         <div className="flex flex-col items-center gap-4">
             <div className="relative w-64 aspect-square">
                 <div className="vinyl-cover -translate-x-1/4">
+                    <ConfettiExplosion zIndex={999} />
                     <h2 className="font-mono h4 line-clamp-2">{track.title}</h2>
                     <div className="flex flex-wrap items-center justify-center font-mono text-sm gap-x-2 gap-y-1">
                         {track.artists.map(
