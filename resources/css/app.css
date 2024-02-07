@@ -87,10 +87,6 @@
 }
 
 @layer base {
-    * {
-        @apply border-border;
-    }
-
     body {
         @apply bg-stone-50 text-stone-700 font-light font-body;
     }
@@ -138,5 +134,30 @@
     h6,
     .h6 {
         @apply text-xl;
+    }
+}
+
+@layer components {
+    .vinyl-cover {
+        @apply absolute inset-0 z-10 flex flex-col items-center justify-center p-4 text-center border rounded-md border-stone-300 bg-stone-50/60 backdrop-blur-xl;
+    }
+
+    .vinyl {
+        @apply absolute flex items-center justify-center rounded-full inset-2 bg-stone-950;
+        background: linear-gradient(
+                    30deg,
+                    transparent 40%,
+                    rgba(0, 0, 0, 0.5) 40%
+                )
+                no-repeat 100% 0,
+            linear-gradient(60deg, rgba(0, 0, 0, 0.5) 60%, transparent 60%)
+                no-repeat 0 100%,
+            repeating-radial-gradient(
+                #0c0a09,
+                #0c0a09 4px,
+                #57534e 5px,
+                #0c0a09 6px
+            );
+        background-size: 50% 100%, 100% 50%, 100% 100%;
     }
 }

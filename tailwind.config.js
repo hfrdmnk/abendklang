@@ -7,9 +7,6 @@ module.exports = {
         container: {
             center: true,
             padding: "2rem",
-            screens: {
-                "2xl": "1400px",
-            },
         },
         fontSize: {
             sm: "0.79rem",

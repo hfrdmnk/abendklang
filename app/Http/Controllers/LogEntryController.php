@@ -22,8 +22,8 @@ class LogEntryController extends Controller
         $trackArtists = collect($track['artists'])->map(function ($artist) {
             return [
                 'name' => $artist['name'],
-                'uri' => $artist['uri'],
-                'url' => $artist['external_urls']['spotify'],
+                'spotify_uri' => $artist['uri'],
+                'spotify_url' => $artist['external_urls']['spotify'],
             ];
         });
 
