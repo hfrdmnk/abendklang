@@ -5,8 +5,11 @@ import { calculateCountdown } from "@/Helpers/countdown";
 import { cn } from "@/lib/utils";
 import route from "ziggy-js";
 import AppLayout from "@/Layouts/AppLayout";
-import { Button } from "@/Components/ui/button";
-import ConfettiExplosion from "react-confetti-explosion";
+import Mood1 from "@/Components/Icons/Mood1";
+import Mood2 from "@/Components/Icons/Mood2";
+import Mood3 from "@/Components/Icons/Mood3";
+import Mood4 from "@/Components/Icons/Mood4";
+import Mood5 from "@/Components/Icons/Mood5";
 import { Pause, Play, SpotifyLogo } from "@phosphor-icons/react";
 import { Skeleton } from "@/Components/ui/skeleton";
 
@@ -33,7 +36,7 @@ export default function Index({ user }: { user: App.Models.User }) {
 
             <div className="container flex flex-col items-center justify-center flex-1 w-full gap-6 py-8">
                 <div className="text-center">
-                    <div className="text-base font-normal font-body text-stone-700">
+                    <div>
                         {!countdown && user.todays_log_entry
                             ? "Your song of the day:"
                             : "something to look forward to. every day."}
@@ -41,7 +44,7 @@ export default function Index({ user }: { user: App.Models.User }) {
                     <h1 className="h5">{new Date().toLocaleDateString()}</h1>
                 </div>
                 {user.todays_log_entry ? (
-                    <Track track={user.todays_log_entry.track} />
+                    <Track logEntry={user.todays_log_entry} />
                 ) : (
                     <Empty countdown={countdown} />
                 )}
@@ -56,12 +59,27 @@ type Artist = {
     spotify_url: string;
 };
 
-function Track({ track }: { track: App.Models.Track }) {
+function Track({ logEntry }: { logEntry: App.Models.LogEntry }) {
+    const track = logEntry.track as App.Models.Track;
     const [audio] = useState(new Audio(track.preview_url || ""));
     const [isPlaying, setIsPlaying] = useState(false);
     const artists = track.artists as unknown as Artist[];
+    const moodSize = 24;
+    const moods = [
+        <Mood1 size={moodSize} />,
+        <Mood2 size={moodSize} />,
+        <Mood3 size={moodSize} />,
+        <Mood4 size={moodSize} />,
+        <Mood5 size={moodSize} />,
+    ];
 
     const togglePlaying = () => setIsPlaying(!isPlaying);
+
+    const rateDay = (mood: number) => {
+        router.post(route("log-entry.update", { logEntry: logEntry.id }), {
+            mood,
+        });
+    };
 
     useEffect(() => {
         const onAudioEnd = () => setIsPlaying(false);
@@ -133,6 +151,26 @@ function Track({ track }: { track: App.Models.Track }) {
                             </li>
                         );
                     })}
+                </ul>
+            </div>
+
+            <div className="flex flex-col items-center gap-2">
+                <div>Reflect on your day:</div>
+                <ul className="flex gap-2">
+                    {Array.from({ length: 5 }, (_, i) => i + 1).map((num) => (
+                        <li
+                            key={num}
+                            className={cn(
+                                "p-4 rounded-full cursor-pointer bg-stone-100 border transition-all duration-300",
+                                logEntry.mood === num
+                                    ? "bg-stone-950 text-white border-stone-950"
+                                    : "hover:bg-stone-200"
+                            )}
+                            onClick={() => rateDay(num)}
+                        >
+                            {moods[num - 1]}
+                        </li>
+                    ))}
                 </ul>
             </div>
         </div>
