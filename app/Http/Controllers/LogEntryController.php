@@ -27,19 +27,6 @@ class LogEntryController extends Controller
             ];
         });
 
-        // $storedTrack = [
-        //     'id' => $track['id'],
-        //     'title' => $track['name'],
-        //     'artists' => $trackArtists,
-        //     'album' => $track['album']['name'],
-        //     'album_art' => $track['album']['images'][0]['url'],
-        //     'preview_url' => $track['preview_url'],
-        //     'spotify_url' => $track['external_urls']['spotify'],
-        //     'spotify_uri' => $track['uri'],
-        // ];
-
-        // ddd($storedTrack);
-
         $storedTrack = Track::firstOrCreate([
             'id' => $track['id'],
         ], [
@@ -59,6 +46,21 @@ class LogEntryController extends Controller
             'date' => $date,
             'track_id' => $storedTrack->id,
             'mode' => $user->mode,
+        ]);
+    }
+
+    public function update(Request $request, LogEntry $logEntry)
+    {
+        if ($logEntry->user_id !== $request->user()->id) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'mood' => 'required|in:1,2,3,4,5',
+        ]);
+
+        $logEntry->update([
+            'mood' => $validated['mood'],
         ]);
     }
 }
