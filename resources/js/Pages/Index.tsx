@@ -34,7 +34,9 @@ export default function Index({ user }: { user: App.Models.User }) {
             <div className="container flex flex-col items-center justify-center flex-1 w-full gap-6 py-8">
                 <div className="text-center">
                     <div className="text-base font-normal font-body text-stone-700">
-                        something to look forward to. every day.
+                        {!countdown && user.todays_log_entry
+                            ? "Your song of the day:"
+                            : "something to look forward to. every day."}
                     </div>
                     <h1 className="h5">{new Date().toLocaleDateString()}</h1>
                 </div>
@@ -83,7 +85,28 @@ function Track({ track }: { track: App.Models.Track }) {
                         alt="Album art"
                         className="inset-0"
                     />
-                    <ConfettiExplosion zIndex={999} />
+                    <div className="absolute flex gap-2 left-2 bottom-2">
+                        <a
+                            onClick={() =>
+                                (window.location.href = track.spotify_uri)
+                            }
+                            className="flex items-center justify-center w-10 h-10 p-2 rounded-sm cursor-pointer bg-stone-50/40 backdrop-blur text-stone-950"
+                        >
+                            <SpotifyLogo size={32} />
+                        </a>
+                        {track.preview_url && (
+                            <a
+                                onClick={togglePlaying}
+                                className="flex items-center justify-center w-10 h-10 p-2 rounded-sm cursor-pointer bg-stone-50/40 backdrop-blur text-stone-950"
+                            >
+                                {isPlaying ? (
+                                    <Pause size={16} weight="fill" />
+                                ) : (
+                                    <Play size={16} weight="fill" />
+                                )}
+                            </a>
+                        )}
+                    </div>
                 </div>
                 <div className="vinyl translate-x-1/4">
                     <img
@@ -96,14 +119,14 @@ function Track({ track }: { track: App.Models.Track }) {
             </div>
 
             <div className="flex flex-col gap-2 text-center">
-                <h2 className="h6">{track.title}</h2>
+                <h2 className="font-mono h6">{track.title}</h2>
                 <ul className="flex flex-wrap justify-center gap-1">
                     {artists.map((artist: Artist) => {
                         return (
                             <li key={artist.name}>
                                 <a
                                     href={artist.spotify_uri}
-                                    className="px-3 py-1 border rounded-sm"
+                                    className="px-3 py-1 font-mono border rounded-sm"
                                 >
                                     {artist.name}
                                 </a>
@@ -111,24 +134,6 @@ function Track({ track }: { track: App.Models.Track }) {
                         );
                     })}
                 </ul>
-            </div>
-
-            <div className="flex gap-2">
-                <Button
-                    onClick={() => (window.location.href = track.spotify_uri)}
-                    variant="ghost"
-                >
-                    <SpotifyLogo size={32} />
-                </Button>
-                {track.preview_url && (
-                    <Button variant="ghost" onClick={togglePlaying}>
-                        {isPlaying ? (
-                            <Pause size={24} weight="fill" />
-                        ) : (
-                            <Play size={24} weight="fill" />
-                        )}
-                    </Button>
-                )}
             </div>
         </div>
     );
@@ -189,12 +194,6 @@ function Empty({
                         <Skeleton className="w-12 h-6 border rounded" />
                     </li>
                 </ul>
-            </div>
-
-            <div className="flex gap-2">
-                <Button disabled variant="ghost">
-                    <SpotifyLogo size={32} />
-                </Button>
             </div>
         </div>
     );
