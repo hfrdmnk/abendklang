@@ -56,7 +56,7 @@ class LogEntryController extends Controller
         }
 
         $validated = $request->validate([
-            'mood' => 'required|in:1,2,3,4,5',
+            'mood' => 'nullable|in:1,2,3,4,5',
         ]);
 
         $logEntry->update([

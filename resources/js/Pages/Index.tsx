@@ -75,7 +75,10 @@ function Track({ logEntry }: { logEntry: App.Models.LogEntry }) {
 
     const togglePlaying = () => setIsPlaying(!isPlaying);
 
-    const rateDay = (mood: number) => {
+    const rateDay = (mood: number | null) => {
+        if (mood === logEntry.mood) {
+            mood = null;
+        }
         router.post(route("log-entry.update", { logEntry: logEntry.id }), {
             mood,
         });
