@@ -60,7 +60,7 @@ class User extends Authenticatable
 
     public function logEntries()
     {
-        return $this->hasMany(LogEntry::class);
+        return $this->hasMany(LogEntry::class)->latest();
     }
 
     public function getTodaysLogEntryAttribute()
