@@ -12,7 +12,7 @@ const AppLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
                 <Abendklang />
             </header>
             <main className="flex flex-col flex-1">{children}</main>
-            <footer className="py-4">
+            <footer className="py-4 font-mono">
                 <div className="container space-y-4">
                     <nav>
                         <ul className="flex justify-center gap-4">
@@ -42,7 +42,7 @@ const AppLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
                             </li>
                         </ul>
                     </nav>
-                    <div className="flex justify-center">
+                    <div className="flex justify-center text-sm">
                         <Link href={route("logout")} method="post">
                             Logout
                         </Link>
