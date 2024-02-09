@@ -138,10 +138,6 @@
 }
 
 @layer components {
-    .vinyl-cover {
-        @apply absolute inset-0 z-10 flex flex-col items-center justify-center p-4 text-center border rounded-md border-stone-300 bg-stone-100/90 backdrop-blur-xl gap-3;
-    }
-
     .vinyl {
         @apply absolute flex items-center justify-center rounded-full inset-2 bg-stone-950;
         background: linear-gradient(
