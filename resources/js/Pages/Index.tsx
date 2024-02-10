@@ -10,8 +10,8 @@ import Mood2 from "@/Components/Icons/Mood2";
 import Mood3 from "@/Components/Icons/Mood3";
 import Mood4 from "@/Components/Icons/Mood4";
 import Mood5 from "@/Components/Icons/Mood5";
-import { Pause, Play, SpotifyLogo } from "@phosphor-icons/react";
 import { Skeleton } from "@/Components/ui/skeleton";
+import TrackElement from "@/Components/TrackElement";
 
 export default function Index({ user }: { user: App.Models.User }) {
     const [countdown, setCountdown] = useState<
@@ -53,17 +53,7 @@ export default function Index({ user }: { user: App.Models.User }) {
     );
 }
 
-type Artist = {
-    name: string;
-    spotify_uri: string;
-    spotify_url: string;
-};
-
 function Track({ logEntry }: { logEntry: App.Models.LogEntry }) {
-    const track = logEntry.track as App.Models.Track;
-    const [audio] = useState(new Audio(track.preview_url || ""));
-    const [isPlaying, setIsPlaying] = useState(false);
-    const artists = track.artists as unknown as Artist[];
     const moodSize = 24;
     const moods = [
         <Mood1 size={moodSize} />,
@@ -72,8 +62,6 @@ function Track({ logEntry }: { logEntry: App.Models.LogEntry }) {
         <Mood4 size={moodSize} />,
         <Mood5 size={moodSize} />,
     ];
-
-    const togglePlaying = () => setIsPlaying(!isPlaying);
 
     const rateDay = (mood: number | null) => {
         if (mood === logEntry.mood) {
@@ -84,78 +72,9 @@ function Track({ logEntry }: { logEntry: App.Models.LogEntry }) {
         });
     };
 
-    useEffect(() => {
-        const onAudioEnd = () => setIsPlaying(false);
-        audio.addEventListener("ended", onAudioEnd);
-
-        return () => {
-            audio.removeEventListener("ended", onAudioEnd);
-        };
-    }, [audio]);
-
-    useEffect(() => {
-        isPlaying ? audio.play() : audio.pause();
-    }, [audio, isPlaying]);
-
     return (
         <div className="flex flex-col items-center gap-8">
-            <div className="relative w-64 aspect-square">
-                <div className="absolute inset-0 z-10 overflow-hidden text-center border rounded-md border-stone-300 -translate-x-1/4">
-                    <img
-                        src={track.album_art}
-                        alt="Album art"
-                        className="inset-0"
-                    />
-                    <div className="absolute flex gap-2 left-2 bottom-2">
-                        <a
-                            onClick={() =>
-                                (window.location.href = track.spotify_uri)
-                            }
-                            className="flex items-center justify-center w-10 h-10 p-2 rounded-sm cursor-pointer bg-stone-50/40 backdrop-blur text-stone-950"
-                        >
-                            <SpotifyLogo size={32} />
-                        </a>
-                        {track.preview_url && (
-                            <a
-                                onClick={togglePlaying}
-                                className="flex items-center justify-center w-10 h-10 p-2 rounded-sm cursor-pointer bg-stone-50/40 backdrop-blur text-stone-950"
-                            >
-                                {isPlaying ? (
-                                    <Pause size={16} weight="fill" />
-                                ) : (
-                                    <Play size={16} weight="fill" />
-                                )}
-                            </a>
-                        )}
-                    </div>
-                </div>
-                <div className="vinyl translate-x-1/4">
-                    <img
-                        src={track.album_art}
-                        alt="Album art"
-                        className="block w-1/3 rounded-full aspect-square"
-                    />
-                    <div className="absolute w-2 h-2 -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 bg-stone-50"></div>
-                </div>
-            </div>
-
-            <div className="flex flex-col gap-2 text-center">
-                <h2 className="font-mono h6">{track.title}</h2>
-                <ul className="flex flex-wrap justify-center gap-1">
-                    {artists.map((artist: Artist) => {
-                        return (
-                            <li key={artist.name}>
-                                <a
-                                    href={artist.spotify_uri}
-                                    className="px-3 py-1 font-mono border rounded-sm"
-                                >
-                                    {artist.name}
-                                </a>
-                            </li>
-                        );
-                    })}
-                </ul>
-            </div>
+            <TrackElement logEntry={logEntry} />
 
             <div className="flex flex-col items-center gap-2">
                 <div>Reflect on your day:</div>
