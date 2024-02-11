@@ -82,7 +82,7 @@ const TrackElement = ({
                     </div>
                     {logEntry.mood && isInGrid && (
                         <div className="absolute top-2 right-2">
-                            <div className="flex items-center justify-center w-10 h-10 p-2 rounded-full cursor-pointer bg-stone-50/40 backdrop-blur text-stone-950">
+                            <div className="flex items-center justify-center w-10 h-10 p-2 rounded-full bg-stone-50/40 backdrop-blur text-stone-950">
                                 {moods[logEntry.mood - 1]}
                             </div>
                         </div>
@@ -99,7 +99,7 @@ const TrackElement = ({
             </div>
 
             <div className="flex flex-col gap-2 text-center">
-                <h2 className={cn("font-mono", isInGrid ? "text-lg" : "h6")}>
+                <h2 className={cn("font-body", isInGrid ? "text-lg" : "h6")}>
                     {track.title}
                 </h2>
                 <ul className="flex flex-wrap justify-center gap-1">
@@ -109,7 +109,7 @@ const TrackElement = ({
                                 <a
                                     href={artist.spotify_uri}
                                     className={cn(
-                                        "px-3 py-1 font-mono border rounded-sm",
+                                        "px-3 py-1 font-body border rounded-sm font-mono",
                                         isInGrid ? "text-sm" : "text-xs"
                                     )}
                                 >
