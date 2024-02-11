@@ -37,6 +37,8 @@ class LogEntryController extends Controller
             return [$dateString => $logEntries->get($dateString)];
         });
 
+        $days = $days->reverse();
+
         return Inertia::render('Grid', [
             'logEntries' => $days
         ]);

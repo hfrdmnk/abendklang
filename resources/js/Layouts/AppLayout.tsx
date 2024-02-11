@@ -29,7 +29,7 @@ const AppLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
                                         : ""
                                 }
                             >
-                                Past
+                                Logs
                             </Link>
                         </li>
                         <li>

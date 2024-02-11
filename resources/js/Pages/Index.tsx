@@ -32,7 +32,7 @@ export default function Index({ user }: { user: App.Models.User }) {
 
     return (
         <AppLayout>
-            <Head title="abendklang." />
+            <Head title="abendklang. today" />
 
             <div className="container flex flex-col items-center justify-center flex-1 w-full gap-6 py-8">
                 <div className="text-center">
