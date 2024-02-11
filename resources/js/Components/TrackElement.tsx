@@ -48,7 +48,7 @@ const TrackElement = ({
         <div className="flex flex-col items-center gap-8">
             <div
                 className={cn(
-                    "relative aspect-square",
+                    "relative aspect-square group",
                     isInGrid ? "h-48" : "h-64"
                 )}
             >
@@ -88,11 +88,11 @@ const TrackElement = ({
                         </div>
                     )}
                 </div>
-                <div className="vinyl translate-x-1/4">
+                <div className="transition duration-300 vinyl translate-x-1/4 group-hover:translate-x-1/3">
                     <img
                         src={track.album_art}
                         alt="Album art"
-                        className="block w-1/3 rounded-full aspect-square"
+                        className="block w-1/3 transition duration-300 rounded-full aspect-square group-hover:rotate-12"
                     />
                     <div className="absolute w-2 h-2 -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 bg-stone-50"></div>
                 </div>
@@ -109,7 +109,7 @@ const TrackElement = ({
                                 <a
                                     href={artist.spotify_uri}
                                     className={cn(
-                                        "px-3 py-1 font-body border rounded-sm font-mono",
+                                        "px-3 py-1 border rounded-sm font-mono",
                                         isInGrid ? "text-sm" : "text-xs"
                                     )}
                                 >
