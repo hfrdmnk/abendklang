@@ -8,45 +8,50 @@ const AppLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <header className="flex items-center justify-center px-8 py-3">
+            <header className="container flex items-center justify-between py-8">
                 <Abendklang />
+                <nav>
+                    <ul className="flex justify-center gap-4">
+                        <li>
+                            <Link
+                                href="/"
+                                className={url === "/" ? "font-bold" : ""}
+                            >
+                                Today
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/logs"
+                                className={
+                                    url === "/logs"
+                                        ? "font-medium text-stone-950"
+                                        : ""
+                                }
+                            >
+                                Past
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href={route("logout")} method="post">
+                                Logout
+                            </Link>
+                        </li>
+                    </ul>
+                </nav>
             </header>
             <main className="flex flex-col flex-1">{children}</main>
-            <footer className="py-4 font-mono">
-                <div className="container space-y-4">
-                    <nav>
-                        <ul className="flex justify-center gap-4">
-                            <li>
-                                <Link
-                                    href="/logs"
-                                    className={
-                                        url === "/logs"
-                                            ? "font-medium text-stone-950"
-                                            : ""
-                                    }
-                                >
-                                    Past
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    href="/"
-                                    className={
-                                        url === "/"
-                                            ? "font-medium text-stone-950"
-                                            : ""
-                                    }
-                                >
-                                    Today
-                                </Link>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div className="flex justify-center text-sm">
-                        <Link href={route("logout")} method="post">
-                            Logout
-                        </Link>
-                    </div>
+            <footer className="container flex items-center justify-center py-4 text-sm">
+                <div>
+                    a{" "}
+                    <a
+                        href="https://linea.studio"
+                        target="_blank"
+                        className="underline"
+                    >
+                        linea
+                    </a>{" "}
+                    projektli.
                 </div>
             </footer>
         </div>
