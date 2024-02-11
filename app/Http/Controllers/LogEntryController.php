@@ -2,13 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use DatePeriod;
+use DateInterval;
+use Inertia\Inertia;
 use App\Models\Track;
 use App\Models\LogEntry;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Http\Clients\SpotifyClient;
 
 class LogEntryController extends Controller
 {
+    public function index(Request $request)
+    {
+        $user = $request->user();
+        $logEntries = LogEntry::where('user_id', $user->id)
+            ->orderBy('date', 'asc')
+            ->get()
+            ->keyBy(function ($logEntry) {
+                return $logEntry->date->format('Y-m-d');
+            });
+
+        $firstEntryDate = $logEntries->first()?->date;
+        $today = now($user->timezone)->startOfDay();
+
+        $period = new DatePeriod(
+            $firstEntryDate ?? $today,
+            new DateInterval('P1D'),
+            $today->addDay()
+        );
+
+        $days = collect($period)->mapWithKeys(function ($date) use ($logEntries) {
+            $dateString = $date->format('Y-m-d');
+            return [$dateString => $logEntries->get($dateString)];
+        });
+
+        return Inertia::render('Grid', [
+            'logEntries' => $days
+        ]);
+    }
+
     public function store(Request $request)
     {
         if (!isEvening() || $request->user()->todays_log_entry !== null) {
