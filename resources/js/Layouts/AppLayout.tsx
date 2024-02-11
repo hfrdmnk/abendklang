@@ -41,7 +41,7 @@ const AppLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
                 </nav>
             </header>
             <main className="flex flex-col flex-1">{children}</main>
-            <footer className="container flex items-center justify-center py-4 text-sm">
+            <footer className="container flex items-center justify-center py-8 text-sm">
                 <div>
                     a{" "}
                     <a
