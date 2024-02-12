@@ -108,7 +108,7 @@ const TrackElement = ({
             <div className="flex flex-col gap-2 text-center">
                 <h2
                     className={cn(
-                        "font-body",
+                        "font-sans",
                         isInGrid || isSmaller ? "text-lg" : "h6"
                     )}
                 >

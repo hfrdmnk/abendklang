@@ -2,7 +2,7 @@ export function calculateCountdown() {
     const now = new Date();
     const target = new Date();
 
-    target.setHours(17);
+    target.setHours(20);
     target.setMinutes(0);
     target.setSeconds(0);
 
