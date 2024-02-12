@@ -9,7 +9,9 @@ const AppLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
     return (
         <div className="flex flex-col min-h-screen">
             <header className="container flex flex-col items-center justify-between gap-2 py-8 sm:flex-row">
-                <Abendklang />
+                <Link href="/">
+                    <Abendklang />
+                </Link>
                 <nav>
                     <ul className="flex justify-center gap-4">
                         <li>
