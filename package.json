@@ -20,6 +20,7 @@
         "@phosphor-icons/react": "^2.0.15",
         "@radix-ui/react-slot": "^1.0.2",
         "@types/react": "^18.2.55",
+        "@uidotdev/usehooks": "^2.4.1",
         "@vitejs/plugin-react": "^4.2.1",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.0",

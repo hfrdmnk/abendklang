@@ -12,6 +12,7 @@ import Mood4 from "@/Components/Icons/Mood4";
 import Mood5 from "@/Components/Icons/Mood5";
 import { Skeleton } from "@/Components/ui/skeleton";
 import TrackElement from "@/Components/TrackElement";
+import { useMediaQuery } from "@uidotdev/usehooks";
 
 export default function LogEntry({
     logEntry,
@@ -40,11 +41,14 @@ export default function LogEntry({
 
             <div className="container flex flex-col items-center justify-center flex-1 w-full gap-6 py-8">
                 <div className="text-center">
-                    <div>
-                        {!countdown && logEntry
-                            ? "Your song of the day:"
-                            : "something to look forward to. every day."}
-                    </div>
+                    {!countdown && logEntry && (
+                        <h1 className="mb-4">Your song of the day:</h1>
+                    )}
+                    {(countdown || !logEntry) && (
+                        <h1 className="mb-4 h4">
+                            something to look forward to. every day.
+                        </h1>
+                    )}
                     <h1 className="h5">{new Date().toLocaleDateString()}</h1>
                 </div>
                 {logEntry ? (
@@ -58,6 +62,8 @@ export default function LogEntry({
 }
 
 function Track({ logEntry }: { logEntry: App.Models.LogEntry }) {
+    const isSmallDevice = useMediaQuery("only screen and (max-width: 460px)");
+
     const moodSize = 24;
     const moods = [
         <Mood1 size={moodSize} />,
@@ -78,7 +84,7 @@ function Track({ logEntry }: { logEntry: App.Models.LogEntry }) {
 
     return (
         <div className="flex flex-col items-center gap-8">
-            <TrackElement logEntry={logEntry} />
+            <TrackElement logEntry={logEntry} isSmaller={isSmallDevice} />
 
             <div className="flex flex-col items-center gap-2">
                 <div>Reflect on your day:</div>

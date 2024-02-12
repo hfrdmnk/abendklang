@@ -10,9 +10,11 @@ import { cn } from "@/lib/utils";
 const TrackElement = ({
     logEntry,
     isInGrid,
+    isSmaller,
 }: {
     logEntry: App.Models.LogEntry;
     isInGrid?: boolean;
+    isSmaller?: boolean;
 }) => {
     const track = logEntry.track as App.Models.Track;
     const artists = track.artists as unknown as Artist[];
@@ -45,11 +47,16 @@ const TrackElement = ({
     ];
 
     return (
-        <div className="flex flex-col items-center gap-8">
+        <div
+            className={cn(
+                "flex flex-col items-center gap-8",
+                isInGrid || isSmaller ? "min-w-80" : "min-w-96"
+            )}
+        >
             <div
                 className={cn(
                     "relative aspect-square group",
-                    isInGrid ? "h-48" : "h-64"
+                    isInGrid || isSmaller ? "w-48" : "w-64"
                 )}
             >
                 <div className="absolute inset-0 z-10 overflow-hidden text-center border rounded-md border-stone-300 -translate-x-1/4">
@@ -99,7 +106,12 @@ const TrackElement = ({
             </div>
 
             <div className="flex flex-col gap-2 text-center">
-                <h2 className={cn("font-body", isInGrid ? "text-lg" : "h6")}>
+                <h2
+                    className={cn(
+                        "font-body",
+                        isInGrid || isSmaller ? "text-lg" : "h6"
+                    )}
+                >
                     {track.title}
                 </h2>
                 <ul className="flex flex-wrap justify-center gap-1">
@@ -110,7 +122,9 @@ const TrackElement = ({
                                     href={artist.spotify_uri}
                                     className={cn(
                                         "px-3 py-1 border rounded-sm",
-                                        isInGrid ? "text-sm" : "text-xs"
+                                        isInGrid || isSmaller
+                                            ? "text-sm"
+                                            : "text-xs"
                                     )}
                                 >
                                     {artist.name}

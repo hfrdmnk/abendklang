@@ -14,7 +14,7 @@ export default function Grid({ logEntries }: { logEntries: LogEntries }) {
 
             <div className="container flex-1 w-full py-8">
                 <h1 className="mb-4">Your logs</h1>
-                <ul className="grid grid-cols-4 gap-4">
+                <ul className="grid gap-4 grid-cols-[repeat(auto-fill,_minmax(20rem,_1fr))]">
                     {Object.entries(logEntries).map(([date, logEntry]) => (
                         <li
                             key={date}
