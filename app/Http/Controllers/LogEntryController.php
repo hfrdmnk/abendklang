@@ -8,7 +8,6 @@ use Inertia\Inertia;
 use App\Models\Track;
 use App\Models\LogEntry;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use App\Http\Clients\SpotifyClient;
 
 class LogEntryController extends Controller
@@ -41,6 +40,20 @@ class LogEntryController extends Controller
 
         return Inertia::render('Grid', [
             'logEntries' => $days
+        ]);
+    }
+
+    public function show(Request $request, LogEntry $logEntry = null)
+    {
+        if ($logEntry === null) {
+            $logEntry = $request->user()->todays_log_entry;
+        } else if ($logEntry->user_id !== $request->user()->id) {
+            abort(403);
+        }
+
+        return Inertia::render('LogEntry', [
+            'logEntry' => $logEntry,
+            'isEvening' => isEvening(),
         ]);
     }
 

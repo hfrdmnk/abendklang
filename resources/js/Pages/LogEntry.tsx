@@ -13,7 +13,11 @@ import Mood5 from "@/Components/Icons/Mood5";
 import { Skeleton } from "@/Components/ui/skeleton";
 import TrackElement from "@/Components/TrackElement";
 
-export default function Index({ user }: { user: App.Models.User }) {
+export default function LogEntry({
+    logEntry,
+}: {
+    logEntry: App.Models.LogEntry;
+}) {
     const [countdown, setCountdown] = useState<
         ReturnType<typeof calculateCountdown>
     >(calculateCountdown());
@@ -37,14 +41,14 @@ export default function Index({ user }: { user: App.Models.User }) {
             <div className="container flex flex-col items-center justify-center flex-1 w-full gap-6 py-8">
                 <div className="text-center">
                     <div>
-                        {!countdown && user.todays_log_entry
+                        {!countdown && logEntry
                             ? "Your song of the day:"
                             : "something to look forward to. every day."}
                     </div>
                     <h1 className="h5">{new Date().toLocaleDateString()}</h1>
                 </div>
-                {user.todays_log_entry ? (
-                    <Track logEntry={user.todays_log_entry} />
+                {logEntry ? (
+                    <Track logEntry={logEntry} />
                 ) : (
                     <Empty countdown={countdown} />
                 )}
@@ -120,27 +124,29 @@ function Empty({
                     )}
                     onClick={handleClick}
                 >
-                    {!countdown && (
-                        <>
-                            <h3 className="font-mono h6">
-                                Your surprise is ready.
-                            </h3>
-                            <div className="flex gap-2 font-mono text-sm">
-                                Click to reveal.
-                            </div>
-                        </>
-                    )}
-                    {countdown && (
-                        <>
-                            <h3 className="font-mono h4">
-                                {countdown.hours}:{countdown.minutes}:
-                                {countdown.seconds}
-                            </h3>
-                            <div className="flex gap-2 font-mono text-sm">
-                                until your daily surprise.
-                            </div>
-                        </>
-                    )}
+                    <div className="flex flex-col items-center justify-center gap-1">
+                        {!countdown && (
+                            <>
+                                <h3 className="text-lg">
+                                    Your surprise is ready.
+                                </h3>
+                                <div className="flex gap-2 text-sm">
+                                    Click to reveal.
+                                </div>
+                            </>
+                        )}
+                        {countdown && (
+                            <>
+                                <h3 className="text-lg tabular-nums">
+                                    {countdown.hours}:{countdown.minutes}:
+                                    {countdown.seconds}
+                                </h3>
+                                <div className="flex gap-2 text-sm">
+                                    until your daily surprise.
+                                </div>
+                            </>
+                        )}
+                    </div>
                 </div>
                 <div className="vinyl">
                     <div className="block w-1/3 rounded-full aspect-square bg-slate-100"></div>

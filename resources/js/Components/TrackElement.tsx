@@ -109,7 +109,7 @@ const TrackElement = ({
                                 <a
                                     href={artist.spotify_uri}
                                     className={cn(
-                                        "px-3 py-1 border rounded-sm font-mono",
+                                        "px-3 py-1 border rounded-sm",
                                         isInGrid ? "text-sm" : "text-xs"
                                     )}
                                 >

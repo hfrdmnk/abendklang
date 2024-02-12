@@ -22,7 +22,7 @@ use Laravel\Socialite\Facades\Socialite;
 |
 */
 
-Route::get('/', [UserController::class, 'index'])->middleware('auth')->name('index');
+Route::get('/', [LogEntryController::class, 'show'])->middleware('auth')->name('index');
 Route::get('/logs', [LogEntryController::class, 'index'])->middleware('auth')->name('entries');
 Route::post('/update-timezone', [UserController::class, 'updateTimezone'])->middleware('auth')->name('timezone.update');
 

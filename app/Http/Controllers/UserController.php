@@ -9,14 +9,6 @@ use Illuminate\Http\RedirectResponse;
 
 class UserController extends Controller
 {
-    public function index()
-    {
-        return Inertia::render('Index', [
-            'user' => User::find(auth()->id())->only('name', 'mode', 'todays_log_entry'),
-            'is_evening' => isEvening()
-        ]);
-    }
-
     public function login()
     {
         return Inertia::render('Login');
