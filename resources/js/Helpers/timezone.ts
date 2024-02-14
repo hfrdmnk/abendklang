@@ -7,7 +7,9 @@ export function updateUserTimezone() {
 
     if (!timezoneUpdated) {
         const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        sessionStorage.setItem("timezoneUpdated", true.toString());
 
+        // TODO: Figure out why i can't put the sessionStorage.setItem in the onSuccess callback
         router.post(
             route("timezone.update"),
             {
@@ -15,7 +17,6 @@ export function updateUserTimezone() {
             },
             {
                 onSuccess: () => {
-                    sessionStorage.setItem("timezoneUpdated", true.toString());
                     console.log("Timezone updated");
                 },
             }
