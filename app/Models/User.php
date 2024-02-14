@@ -5,11 +5,11 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Log;
 
 class User extends Authenticatable
 {
@@ -23,9 +23,9 @@ class User extends Authenticatable
     protected $fillable = [
         'spotify_id',
         'name',
-        'token',
+        'access_token',
         'refresh_token',
-        'expires_in',
+        'access_token_expires_at',
     ];
 
     /**
@@ -34,12 +34,19 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
         'remember_token',
         'spotify_id',
-        'token',
+        'access_token',
         'refresh_token',
-        'expires_in',
+        'access_token_expires_at',
+    ];
+
+    protected $appends = [
+        'todays_log_entry',
+    ];
+
+    protected $with = [
+        'logEntries',
     ];
 
     /**
@@ -48,7 +55,20 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'access_token_expires_at' => 'datetime',
     ];
+
+    public function logEntries()
+    {
+        return $this->hasMany(LogEntry::class)->latest();
+    }
+
+    public function getTodaysLogEntryAttribute()
+    {
+        $date = now($this->timezone)->startOfDay();
+
+        return LogEntry::where('user_id', $this->id)
+            ->whereDate('date', $date)
+            ->first();
+    }
 }

@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LogEntryController;
+use App\Http\Controllers\UserController;
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -19,51 +22,23 @@ use Laravel\Socialite\Facades\Socialite;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Index', [
-        'user' => User::find(auth()->id())->only(['name']),
-    ]);
-})->middleware('auth');
+Route::get('/', [LogEntryController::class, 'show'])->middleware('auth')->name('index');
+Route::get('/logs', [LogEntryController::class, 'index'])->middleware('auth')->name('entries');
+Route::post('/update-timezone', [UserController::class, 'updateTimezone'])->middleware('auth')->name('timezone.update');
 
-Route::get('/auth/login', function () {
-    return Inertia::render('Login');
-})->middleware('guest')->name('login');
+Route::get('/hello', [UserController::class, 'login'])->middleware('guest')->name('login');
 
-Route::get('/auth/logout', function (Request $request): RedirectResponse {
-    auth()->logout();
-
-    $request->session()->invalidate();
-
-    $request->session()->regenerateToken();
-
-    return redirect('/');
-})->middleware('auth')->name('logout');
+Route::post('/log-entry', [LogEntryController::class, 'store'])->middleware('auth')->name('log-entry.store');
+Route::post('/log-entry/{logEntry}', [LogEntryController::class, 'update'])->middleware('auth')->name('log-entry.update');
 
 /*
 |--------------------------------------------------------------------------
-| Socialite
+| Auth
 |--------------------------------------------------------------------------
 */
 
-Route::get('/auth/redirect', function () {
-    return Socialite::driver('spotify')
-        ->scopes(['playlist-modify-private'])
-        ->redirect();
-});
 
-Route::get('/auth/callback', function () {
-    $spotifyUser = Socialite::driver('spotify')->user();
+Route::get('/auth/redirect', [AuthController::class, 'redirect'])->middleware('guest');
+Route::get('/auth/callback', [AuthController::class, 'callback'])->middleware('guest');
 
-    $user = User::updateOrCreate([
-        'spotify_id' => $spotifyUser->id,
-    ], [
-        'name' => $spotifyUser->name,
-        'token' => $spotifyUser->token,
-        'refresh_token' => $spotifyUser->refreshToken,
-        'expires_in' => now()->addSeconds($spotifyUser->expiresIn),
-    ]);
-
-    auth()->login($user);
-
-    return redirect('/');
-});
+Route::post('/auth/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');

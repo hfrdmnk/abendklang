@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
+            $table->enum('mode', ['nostalgia', 'discovery'])->default('discovery');
             $table->string('spotify_id')->unique();
-            $table->string('token');
+            $table->string('timezone')->default('UTC');
+            $table->string('access_token');
             $table->string('refresh_token');
-            $table->date('expires_in');
+            $table->dateTime('access_token_expires_at');
             $table->rememberToken();
             $table->timestamps();
         });
