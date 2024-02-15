@@ -2,14 +2,13 @@ import { router } from "@inertiajs/react";
 import route from "ziggy-js";
 
 export function updateUserTimezone() {
-    const timezoneUpdated =
-        sessionStorage.getItem("timezoneUpdated") === "true";
+    const lastUpdate = localStorage.getItem("lastTimezoneUpdate");
+    const today = new Date().toISOString().split("T")[0];
 
-    if (!timezoneUpdated) {
+    if (lastUpdate !== today) {
         const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        sessionStorage.setItem("timezoneUpdated", true.toString());
+        localStorage.setItem("lastTimezoneUpdate", today);
 
-        // TODO: Figure out why i can't put the sessionStorage.setItem in the onSuccess callback
         router.post(
             route("timezone.update"),
             {
