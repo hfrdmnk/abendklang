@@ -21,8 +21,7 @@ console_command = 'php /var/www/html/artisan tinker'
   SESSION_SECURE_COOKIE = 'true'
   APP_NAME = 'abendklang'
   APP_URL = 'https://abendklang.fly.dev'
-  DB_CONNECTION = 'sqlite'
-  DB_DATABASE = '/var/www/html/storage/database/database.sqlite'
+  DB_CONNECTION = 'pgsql'
   SESSION_LIFETIME= 7200
   SPOTIFY_REDIRECT_URI= 'https://abendklang.fly.dev/auth/callback'
 
@@ -39,7 +38,3 @@ console_command = 'php /var/www/html/artisan tinker'
   memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
-
-[mounts]
-  source = 'storage_vol'
-  destination='/var/www/html/storage'

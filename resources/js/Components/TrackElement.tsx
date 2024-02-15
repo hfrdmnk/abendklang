@@ -75,7 +75,7 @@ const TrackElement = ({
                             <SpotifyLogo size={32} />
                         </a>
                         {track.preview_url && (
-                            <a
+                            <div
                                 onClick={togglePlaying}
                                 className="flex items-center justify-center w-10 h-10 p-2 rounded-sm cursor-pointer bg-stone-50/40 backdrop-blur text-stone-950"
                             >
@@ -84,7 +84,7 @@ const TrackElement = ({
                                 ) : (
                                     <Play size={16} weight="fill" />
                                 )}
-                            </a>
+                            </div>
                         )}
                     </div>
                     {logEntry.mood && isInGrid && (

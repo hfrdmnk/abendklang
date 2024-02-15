@@ -35,7 +35,11 @@ const AppLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
                             </Link>
                         </li>
                         <li>
-                            <Link href={route("logout")} method="post">
+                            <Link
+                                href={route("logout")}
+                                method="post"
+                                as="button"
+                            >
                                 Logout
                             </Link>
                         </li>
