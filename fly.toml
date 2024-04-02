@@ -20,17 +20,17 @@ console_command = 'php /var/www/html/artisan tinker'
   SESSION_DRIVER = 'cookie'
   SESSION_SECURE_COOKIE = 'true'
   APP_NAME = 'abendklang'
-  APP_URL = 'https://abendklang.fly.dev'
+  APP_URL = 'https://abendklang.linea.studio'
   DB_CONNECTION = 'pgsql'
   SESSION_LIFETIME= 7200
-  SPOTIFY_REDIRECT_URI= 'https://abendklang.fly.dev/auth/callback'
+  SPOTIFY_REDIRECT_URI= 'https://abendklang.linea.studio/auth/callback'
 
 
 [http_service]
   internal_port = 8080
   force_https = true
-  auto_stop_machines = false
-  auto_start_machines = false
+  auto_stop_machines = true
+  auto_start_machines = true
   min_machines_running = 0
   processes = ['app']
 
